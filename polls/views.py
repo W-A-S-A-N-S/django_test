@@ -337,7 +337,11 @@ def memo_list(self):
 
 def one_memo(request, memo_id):
     memo = Memo.objects.get(id=memo_id)
-    content = f"<h1>제목 : {memo.title}<h1> 내용 : {memo.content}"
+    content = f"""<h1>제목 : {memo.title}</h1>
+    내용 : {memo.content}<br>
+    중요 : {memo.is_important}<br>
+    생성시각 : {memo.created_at}<br>
+    """
 
 
     return HttpResponse(content)
