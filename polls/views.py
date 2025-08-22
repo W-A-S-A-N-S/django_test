@@ -308,3 +308,36 @@ def good(request):
 
 def moon(request):
     return HttpResponse("<h2>문종현<h2>")
+
+def add(request, num1, num2):
+    # 구현하세요
+    result = num1 + num2
+    return HttpResponse(result)
+
+def multiply(request, num1, num2):
+    # 구현하세요
+    result = num1 * num2
+    return HttpResponse(result)
+
+from .models import Article, Memo
+
+def memo_list(self):
+    #메모 전체 가져오기
+    all_memo = Memo.objects.all()
+    
+    #콘텐트 구성하기
+    content = ""
+    for memo in all_memo:
+        content += "제목 : "+memo.title+"<br>"
+        content += "내용 : "+memo.content+"<br>"
+
+    return HttpResponse(content)
+
+#content = "제목 : 타이틀"
+
+def one_memo(request, memo_id):
+    memo = Memo.objects.get(id=memo_id)
+    content = f"<h1>제목 : {memo.title}<h1> 내용 : {memo.content}"
+
+
+    return HttpResponse(content)
