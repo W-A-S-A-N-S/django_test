@@ -1,7 +1,23 @@
-from django.shortcuts import render
+
 
 # Create your views here.
 from django.http import HttpResponse
+from django.shortcuts import render
+from .models import Article, Memo
+
+
+def index(request):
+    memos = Memo.objects.all()
+    context = {
+        "name" : "문종현",
+        "title" : "찌종",
+        "memos" : memos,
+    }
+    return render(request=request, template_name="polls/index.html", context=context)
+
+# def blog_list(request):
+#     return render(request, "not good html")
+
 
 def hello(request):
     """

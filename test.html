@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            color: rgb(136, 136, 141);
+            font-size: 30px;
+        }
+        p {
+            background-color: rgb(156, 30, 62);
+        }
+    </style>
+</head>
+<body>
+    이런저런 내용 담기
+<h1> 파란색 제목</h1>
+<p> 노란 배경</p>
+<table border="1">
+    <tr>  <!-- 행 (Table Row) -->
+        <th>이름</th>  <!-- 제목 셀 (Table Header) -->
+        <th>나이</th>
+        <th>직업</th>
+    </tr>
+    <tr>
+        <td>김철수</td>  <!-- 데이터 셀 (Table Data) -->
+        <td>25</td>
+        <td>개발자</td>
+    </tr>
+    <tr>
+        <td>이영희</td>
+        <td>30</td>
+        <td>디자이너</td>
+    </tr>
+</table>
+<!-- 순서 없는 목록 (Unordered List) -->
+<ul>
+    <li>사과</li>
+    <li>바나나</li>
+    <li>오렌지</li>
+</ul>
+<!-- 결과:
+• 사과
+• 바나나
+• 오렌지
+-->
+
+<!-- 순서 있는 목록 (Ordered List) -->
+<ol>
+    <li>씻기</li>
+    <li>양치하기</li>
+    <li>옷 입기</li>
+</ol>
+<!-- 결과:
+1. 씻기
+2. 양치하기
+3. 옷 입기
+-->
+
+<!-- 중첩 목록 -->
+<ul>
+    <li>과일
+        <ul>
+            <li>사과</li>
+            <li>바나나</li>
+        </ul>
+    </li>
+    <li>채소
+        <ul>
+            <li>당근</li>
+            <li>브로콜리</li>
+        </ul>
+    </li>
+</ul>
+<!-- div: 블록 레벨 컨테이너 (한 줄 전체 차지) -->
+<div>
+    <h2>섹션 제목</h2>
+    <p>섹션 내용</p>
+</div>
+
+<!-- span: 인라인 컨테이너 (필요한 만큼만 차지) -->
+<p>일반 텍스트와 <span style="color: rgb(121, 42, 42);">빨간 텍스트</span>가 있습니다.</p>
+
+<!-- 시맨틱(의미있는) 태그들 -->
+<header>머리말 영역</header>
+<nav>내비게이션 메뉴</nav>
+<main>주요 콘텐츠</main>
+<article>독립적인 콘텐츠</article>
+<section>문서의 섹션</section>
+<aside>사이드바</aside>
+<footer>바닥글</footer>
+</body>
+</html>
