@@ -1,0 +1,39 @@
+<!-- templates/polls/memo_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>메모 작성</title>
+</head>
+<body>
+    <h1>새 메모 작성</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- 방법 1: 한 번에 모든 필드 출력 -->
+        {{ form.as_p }}
+
+        <!-- 방법 2: 필드별로 출력 (더 세밀한 제어) -->
+        <!--
+        <div>
+            {{ form.title.label_tag }}
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div>
+            {{ form.content.label_tag }}
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div>
+            {{ form.is_important }}
+            {{ form.is_important.label_tag }}
+        </div>
+        -->
+
+        <button type="submit">저장</button>
+    </form>
+</body>
+</html>

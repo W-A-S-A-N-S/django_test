@@ -1,0 +1,29 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>메모 목록</h1>
+    
+    {% for memo in memos %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {% if memo.is_important %}
+                        <span class="badge bg-warning">중요</span>
+                    {% endif %}
+                    {{ memo.title }}
+                </h5>
+                <p class="card-text">{{ memo.content|truncatewords:20 }}</p>
+                <div class="d-flex justify-content-between">
+                    <small class="text-muted">{{ memo.created_at|date:"Y-m-d H:i" }}</small>
+                    <a href="{% url 'polls:one_memo' memo.id %}" class="btn btn-sm btn-primary">자세히 보기</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert alert-info">
+            <p>아직 메모가 없습니다. <a href="/admin/">관리자 페이지</a>에서 메모를 추가해보세요!</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

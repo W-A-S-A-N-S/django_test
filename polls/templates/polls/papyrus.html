@@ -1,0 +1,29 @@
+{% extends 'polls/base.html' %}
+{%  block style_class %}
+papyrus-theme
+{% endblock %}
+{% block content %}
+<style>
+    button {
+        font-size: 24px;           /* 글씨 크기 */
+        font-family: 'papyrus';  /* 글씨체 */
+        font-weight: bold;         /* 굵게 */
+        margin : 15px;
+    }
+</style>
+<img src="https://i.namu.wiki/i/F956MfxzIqKlv5PdlXo5psCp_x9i8RP3N04bN6BaYeb5ub-RQL3rU4M5dr_3ciyUPO8g-yIct9ypylmdiS8Uj2rbxsSOqDew9Tgn8KaJs_I5E5-ZsI8z6NRGng9C9aMVsOrg-sdvIOzVG8X1MLJXlQ.png" alt="PAPIRUS">
+<div>
+    <button>
+        FIGHT
+    </button>
+    <button>
+        ACT
+    </button>
+    <button>
+        ITEM
+    </button>
+    <button>
+        MERCY
+    </button>
+</div>
+{% endblock %}

@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {{name}}
-    {% if memos %}
-        {% for memo in memos %}
-        <h6>{{memo.id}} {{memo.title}}</h6>
-        <p>{{memo.content}}</p>
-        {% endfor %}
-    {% else %}
-    <h3>메모 내용이 없습니다</h3>
-    {% endif %}
-</body>
-</html>
+{% extends 'polls/base.html' %}
+
+
+{% block content %}
+<h1>인덱스 페이지입니다!</h1>
+<img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQpRoMPd-wZdgrkspRP11y4s5NX1soozlLHty6SyE85gG-3awBMamEtqiOQEQUsG_xqyvSdV7pDQQgWDMAQwTt00VJFhjRYvoG5OVII3GoXtA" alt="WA!!! SANS!!!">"
+{% endblock %}

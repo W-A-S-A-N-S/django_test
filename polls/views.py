@@ -2,18 +2,17 @@
 
 # Create your views here.
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Article, Memo
+from .forms import MemoModelForm
 
+
+def base1(request):
+    return render(request, 'polls/base.html')
 
 def index(request):
-    memos = Memo.objects.all()
-    context = {
-        "name" : "문종현",
-        "title" : "찌종",
-        "memos" : memos,
-    }
-    return render(request=request, template_name="polls/index.html", context=context)
+
+    return render(request=request, template_name="polls/index.html")
 
 # def blog_list(request):
 #     return render(request, "not good html")
@@ -337,17 +336,11 @@ def multiply(request, num1, num2):
 
 from .models import Article, Memo
 
-def memo_list(self):
-    #메모 전체 가져오기
-    all_memo = Memo.objects.all()
-    
-    #콘텐트 구성하기
-    content = ""
-    for memo in all_memo:
-        content += "제목 : "+memo.title+"<br>"
-        content += "내용 : "+memo.content+"<br>"
 
-    return HttpResponse(content)
+def memo_list(request):
+    memos = Memo.objects.all()
+    print(f"뷰에서 가져온 메모 개수: {memos.count()}")
+    return render(request, 'polls/memo_list.html', {'memos': memos})
 
 #content = "제목 : 타이틀"
 
@@ -358,6 +351,64 @@ def one_memo(request, memo_id):
     중요 : {memo.is_important}<br>
     생성시각 : {memo.created_at}<br>
     """
-
-
     return HttpResponse(content)
+
+def memo_create(request):
+    """ModelForm을 사용한 메모 작성"""
+    if request.method == 'POST':
+        form = MemoModelForm(request.POST)
+        if form.is_valid():
+            memo = form.save()  # 한 줄로 저장 완료!
+            return redirect('memo_detail', pk=memo.pk)
+    else:
+        form = MemoModelForm()
+
+    return render(request, 'polls/memo_form.html', {
+        'form': form,
+        'title': '메모 작성'
+    })
+
+def memo_list(request):
+    """메모 목록 보기"""
+    memos = Memo.objects.all()  # 자동으로 created_at 역순 정렬됨
+    return render(request, 'polls/memo_list.html', {'memos': memos})
+
+def memo_detail(request, pk):
+    """메모 상세 보기"""
+    memo = get_object_or_404(Memo, pk=pk)
+    return render(request, 'polls/memo_detail.html', {'memo': memo})
+
+def memo_update(request, pk):
+    """메모 수정"""
+    memo = get_object_or_404(Memo, pk=pk)
+
+    if request.method == 'POST':
+        form = MemoModelForm(request.POST, instance=memo)  # instance 전달!
+        if form.is_valid():
+            form.save()
+            return redirect('polls:memo_detail', pk=memo.pk)
+    else:
+        form = MemoModelForm(instance=memo)  # 기존 데이터로 폼 채우기
+
+    return render(request, 'polls/memo_form.html', {
+        'form': form,
+        'title': '메모 수정'
+    })
+
+def memo_delete(request, pk):
+    """메모 삭제"""
+    memo = get_object_or_404(Memo, pk=pk)
+
+    if request.method == 'POST':
+        memo.delete()
+        return redirect('polls:memo_list')
+
+    return render(request, 'polls/memo_confirm_delete.html', {'memo': memo})
+
+
+
+def sans(request):
+    return render(request, 'polls/sans.html')
+
+def papyrus(request):
+    return render(request, 'polls/papyrus.html')
