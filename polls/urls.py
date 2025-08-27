@@ -14,6 +14,7 @@ urlpatterns = [
     path('<int:pk>/update/', views.memo_update, name='memo_update'),
     path('<int:pk>/delete/', views.memo_delete, name='memo_delete'),
     path('memo/<int:memo_id>', views.one_memo, name='one_memo'),
+    path('art_create', views.art_create, name='art_create'),
     # path('hello/', views.hello, name='hello'),
     # path('lion/<str:name>/', views.lion, name='lion'),
     # path('good/', views.good, name='good'),

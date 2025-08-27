@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>게시글 작성</title>
+</head>
+<body>
+    <h1>새 게시글 작성</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- 방법 1: 한 번에 모든 필드 출력 -->
+        {{ form.as_p }}
+
+        <button type="submit">저장</button>
+    </form>
+</body>
+</html>

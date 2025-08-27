@@ -2,9 +2,9 @@
 
 # Create your views here.
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article, Memo
-from .forms import MemoModelForm
+from .forms import MemoModelForm, ArtModelForm
 
 
 def base1(request):
@@ -359,7 +359,7 @@ def memo_create(request):
         form = MemoModelForm(request.POST)
         if form.is_valid():
             memo = form.save()  # 한 줄로 저장 완료!
-            return redirect('memo_detail', pk=memo.pk)
+            return redirect('polls:memo_detail', pk=memo.pk)
     else:
         form = MemoModelForm()
 
@@ -412,3 +412,36 @@ def sans(request):
 
 def papyrus(request):
     return render(request, 'polls/papyrus.html')
+
+#CRUD
+#UPDATE DELETE 해당하는 뷰, 템플릿 구성
+#각 템플릿을 base.html 적용 
+
+# def memo_create(request):
+#     """ModelForm을 사용한 메모 작성"""
+#     if request.method == 'POST':
+#         form = MemoModelForm(request.POST)
+#         if form.is_valid():
+#             memo = form.save()  # 한 줄로 저장 완료!
+#             return redirect('polls:memo_detail', pk=memo.pk)
+#     else:
+#         form = MemoModelForm()
+
+#     return render(request, 'polls/memo_form.html', {
+#         'form': form,
+#         'title': '메모 작성'
+#     })
+
+def art_create(request):
+    if request.method == 'POST':
+        form = ArtModelForm(request.POST)
+        if form.is_valid():
+            art = form.save()
+            return redirect('polls:art_list', pk=art.pk)
+    else:
+        form = ArtModelForm()
+
+    return render(request, 'polls/art_form.html', {
+        'form': form,
+        'title': '게시글 작성'
+    })

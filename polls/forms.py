@@ -1,6 +1,6 @@
 # polls/forms.py
 from django import forms
-from .models import Memo
+from .models import Memo, Article
 
 class MemoModelForm(forms.ModelForm):
     """Model과 자동 연결되는 Form"""
@@ -15,6 +15,20 @@ class MemoModelForm(forms.ModelForm):
         }
 
         # 에러 메시지 커스터마이징 (선택사항)
+        error_messages = {
+            'title': {
+                'required': '제목은 반드시 입력해야 합니다.',
+                'max_length': '제목이 너무 깁니다.',
+            },
+        }
+
+
+class ArtModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Article
+        fields = ['title', 'content']
+
         error_messages = {
             'title': {
                 'required': '제목은 반드시 입력해야 합니다.',

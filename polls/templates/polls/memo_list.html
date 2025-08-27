@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>메모 목록</h1>
+    <h1>메모 목록 <button onclick=location.href="{% url 'polls:memo_create' %}">메모 생성</button></h1>
     
     {% for memo in memos %}
         <div class="card mb-3">
@@ -16,7 +16,7 @@
                 <p class="card-text">{{ memo.content|truncatewords:20 }}</p>
                 <div class="d-flex justify-content-between">
                     <small class="text-muted">{{ memo.created_at|date:"Y-m-d H:i" }}</small>
-                    <a href="{% url 'polls:one_memo' memo.id %}" class="btn btn-sm btn-primary">자세히 보기</a>
+                    <a href="{% url 'polls:memo_detail' memo.id %}" class="btn btn-sm btn-primary">자세히 보기</a>
                 </div>
             </div>
         </div>
