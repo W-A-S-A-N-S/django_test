@@ -358,7 +358,9 @@ def memo_create(request):
     if request.method == 'POST':
         form = MemoModelForm(request.POST)
         if form.is_valid():
-            memo = form.save()  # 한 줄로 저장 완료!
+            memo = form.save(commit=False)  # 한 줄로 저장 완료!
+            memo.author = request.user
+            memo.save() 
             return redirect('polls:memo_detail', pk=memo.pk)
     else:
         form = MemoModelForm()

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Article(models.Model):
@@ -16,6 +17,12 @@ class Article(models.Model):
 
 
 class Memo(models.Model):
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='memos',
+        verbose_name='작성자'
+    )
     title = models.CharField('제목', max_length=100)
     content = models.TextField('내용')
     is_important = models.BooleanField('중요', default=False)
