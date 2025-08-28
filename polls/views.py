@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article, Memo
 from .forms import MemoModelForm, ArtModelForm
-
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 
 def base1(request):
     return render(request, 'polls/base.html')
@@ -353,6 +354,7 @@ def one_memo(request, memo_id):
     """
     return HttpResponse(content)
 
+@login_required
 def memo_create(request):
     """ModelForm을 사용한 메모 작성"""
     if request.method == 'POST':

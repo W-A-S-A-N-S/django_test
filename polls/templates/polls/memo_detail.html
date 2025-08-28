@@ -1,4 +1,4 @@
-<!-- memo_detail.html -->
+<!-- 간단한 개선 버전 -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,23 +6,23 @@
 </head>
 <body>
 <div>
-        <h1>{{ memo.title }}</h1>
-        {% if memo.is_important %}
-            <p>⭐ 중요한 메모</p>
-        {% endif %}
+    <h1>{{ memo.title }}</h1>
+    {% if memo.is_important %}
+        <p>⭐ 중요한 메모</p>
+    {% endif %}
 
-        <div style="white-space: pre-wrap;">{{ memo.content }}</div>
+    <div style="white-space: pre-wrap; background: #f5f5f5; padding: 15px; margin: 15px 0;">
+        {{ memo.content }}
+    </div>
 
-        <p>작성일: {{ memo.created_at|date:"Y-m-d H:i:s" }}</p>
-    <button>
-        <a href="{% url 'polls:memo_update' memo.pk %}">수정</a>
-    </button>
-    <button>
-        <a href="{% url 'polls:memo_delete' memo.pk %}">삭제</a>
-    </button>
-    <button>
-        <a href="{% url 'polls:memo_list' %}">목록으로</a>
-    </button>
+    <p>작성일: {{ memo.created_at|date:"Y-m-d H:i:s" }}</p>
+    
+    <!-- 버튼 구조 개선 -->
+    <div>
+        <a href="{% url 'polls:memo_update' memo.pk %}" style="background: #007bff; color: white; padding: 8px 16px; text-decoration: none; margin: 5px;">수정</a>
+        <a href="{% url 'polls:memo_delete' memo.pk %}" style="background: #dc3545; color: white; padding: 8px 16px; text-decoration: none; margin: 5px;">삭제</a>
+        <a href="{% url 'polls:memo_list' %}" style="background: #6c757d; color: white; padding: 8px 16px; text-decoration: none; margin: 5px;">목록으로</a>
+    </div>
 </div>
 </body>
 </html>
