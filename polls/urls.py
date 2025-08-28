@@ -9,6 +9,7 @@ urlpatterns = [
     path('sans', views.sans, name='sans'),
     path('papyrus', views.papyrus, name='papyrus'),
     path('memo/', views.memo_list, name='memo_list'),
+    path('my_memo/', views.my_memo_list, name='my_memo_list'),
     path('memo/create/', views.memo_create, name='memo_create'),
     path('<int:pk>/', views.memo_detail, name='memo_detail'),
     path('<int:pk>/update/', views.memo_update, name='memo_update'),

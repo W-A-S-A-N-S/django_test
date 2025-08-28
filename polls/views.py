@@ -7,6 +7,7 @@ from .models import Article, Memo
 from .forms import MemoModelForm, ArtModelForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 
 def base1(request):
     return render(request, 'polls/base.html')
@@ -377,38 +378,55 @@ def memo_list(request):
     memos = Memo.objects.all()  # 자동으로 created_at 역순 정렬됨
     return render(request, 'polls/memo_list.html', {'memos': memos})
 
+@login_required
+def my_memo_list(request):
+    """내 메모만 보기"""
+    memos = Memo.objects.filter(author=request.user)
+    return render(request, 'polls/memo_list.html', {
+        'memos': memos,
+        'title': '내 메모'
+    })
+
 def memo_detail(request, pk):
     """메모 상세 보기"""
     memo = get_object_or_404(Memo, pk=pk)
     return render(request, 'polls/memo_detail.html', {'memo': memo})
 
+@login_required
 def memo_update(request, pk):
     """메모 수정"""
     memo = get_object_or_404(Memo, pk=pk)
+    if memo.author == request.user:
 
-    if request.method == 'POST':
-        form = MemoModelForm(request.POST, instance=memo)  # instance 전달!
-        if form.is_valid():
-            form.save()
-            return redirect('polls:memo_detail', pk=memo.pk)
+        if request.method == 'POST':
+            form = MemoModelForm(request.POST, instance=memo)  # instance 전달!
+            if form.is_valid():
+                form.save()
+                return redirect('polls:memo_detail', pk=memo.pk)
+        else:
+            form = MemoModelForm(instance=memo)  # 기존 데이터로 폼 채우기
+
+        return render(request, 'polls/memo_form.html', {
+            'form': form,
+            'title': '메모 수정'
+        })
     else:
-        form = MemoModelForm(instance=memo)  # 기존 데이터로 폼 채우기
+        messages.error(request, '본인이 작성한 메모만 수정할 수 있습니다.')
+        return redirect('polls:memo_detail', pk=memo.pk)
 
-    return render(request, 'polls/memo_form.html', {
-        'form': form,
-        'title': '메모 수정'
-    })
-
+@login_required
 def memo_delete(request, pk):
     """메모 삭제"""
     memo = get_object_or_404(Memo, pk=pk)
+    if memo.author == request.user:
+        if request.method == 'POST':
+            memo.delete()
+            return redirect('polls:memo_list')
 
-    if request.method == 'POST':
-        memo.delete()
-        return redirect('polls:memo_list')
-
-    return render(request, 'polls/memo_confirm_delete.html', {'memo': memo})
-
+        return render(request, 'polls/memo_confirm_delete.html', {'memo': memo})
+    else:
+        messages.error(request, '본인이 작성한 메모만 삭제할 수 있습니다.')
+        return redirect('polls:memo_detail', pk=memo.pk)
 
 
 def sans(request):

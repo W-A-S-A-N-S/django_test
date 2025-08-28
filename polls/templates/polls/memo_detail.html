@@ -1,5 +1,8 @@
 <!-- 간단한 개선 버전 -->
 <!DOCTYPE html>
+{% extends 'common/base.html' %}
+
+{% block content %}
 <html>
 <head>
     <title>{{ memo.title }}</title>
@@ -26,3 +29,4 @@
 </div>
 </body>
 </html>
+{% endblock %}
