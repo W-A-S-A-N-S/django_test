@@ -11,4 +11,5 @@ urlpatterns = [
     path('<int:pk>/delete/', views.photo_delete, name='photo_delete'),
     path('<int:pk>/like/', views.photo_like, name='photo_like'),
     path('my/', views.my_photos, name='my_photos'),
+    path('<int:pk>/like_ajax/', views.photo_like_ajax, name='photo_like_ajax'),
 ]

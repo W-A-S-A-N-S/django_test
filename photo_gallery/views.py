@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.db.models import Q, Count
 from .models import DailyPhoto
 from .forms import PhotoForm
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 def photo_list(request):
     """사진 갤러리 목록"""
@@ -188,3 +190,32 @@ def my_photos(request):
         'title': '내 사진',
     }
     return render(request, 'photo_gallery/photo_list.html', context)
+
+@require_POST # POST 방식인지만 확인
+def photo_like_ajax(request, pk):
+    # 1. 함수 맨 위에서 사용자가 로그인했는지 직접 확인합니다.
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {'error': '로그인이 필요합니다.'}, 
+            status=401 # 401 Unauthorized (인증 필요) 상태 코드를 함께 보냅니다.
+        )
+
+    # --- 아래는 기존 코드와 동일 (로그인이 확인된 사용자만 이 코드를 실행) ---
+    photo = get_object_or_404(DailyPhoto, pk=pk)
+    user = request.user
+
+    if user in photo.likes.all():
+        photo.likes.remove(user)
+        liked = False
+        message = "좋아요를 취소했습니다."
+    else:
+        photo.likes.add(user)
+        liked = True
+        message = "좋아요를 눌렀습니다."
+
+    like_count = photo.likes.count()
+    return JsonResponse({
+        'liked': liked,
+        'like_count': like_count,
+        'message': message
+    })

@@ -6,6 +6,18 @@
 </head>
 <body>
     <nav>
+    <a href="{% url 'polls:index' %}">메인</a> |
+    <a href="{% url 'photo_gallery:photo_list' %}">갤러리</a> |
+    {% if user.is_authenticated %}
+        <a href="{% url 'photo_gallery:photo_create' %}">사진 업로드</a> |
+        <a href="{% url 'photo_gallery:my_photos' %}">내 사진</a> |
+        <span>{{ user.username }}님</span>
+        <a href="{% url 'accounts:my_logout' %}">로그아웃</a>
+    {% else %}
+        <a href="{% url 'accounts:my_login' %}">로그인</a>
+    {% endif %}
+    </nav>
+    <nav>
         <a href="{% url 'photo_gallery:photo_list' %}">갤러리로 돌아가기</a>
     </nav>
 
@@ -40,30 +52,83 @@
         </div>
         {% endif %}
 
-        <!-- 좋아요 (폼 방식) -->
-        <div>
-            {% if user.is_authenticated %}
-                <form method="post" action="{% url 'photo_gallery:photo_like' photo.pk %}">
-                    {% csrf_token %}
-                    {% if user_liked %}
-                        <button type="submit">❤️ 좋아요 취소 ({{ like_count }})</button>
-                    {% else %}
-                        <button type="submit">🤍 좋아요 ({{ like_count }})</button>
-                    {% endif %}
-                </form>
-            {% else %}
-                <p>❤️ {{ like_count }}명이 좋아합니다</p>
-                <p><a href="{% url 'accounts:login' %}">로그인</a>하면 좋아요를 누를 수 있습니다.</p>
-            {% endif %}
-        </div>
+    <!-- 좋아요 섹션 -->
+    <div id="likeSection">
+        {% if user.is_authenticated %}
+            <!-- 좋아요 버튼 -->
+            <button id="likeBtn"
+                    data-photo-id="{{ photo.pk }}"
+                    data-url="{% url 'photo_gallery:photo_like_ajax' photo.pk %}"
+                    data-liked="{{ user_liked|lower }}">
+                {% if user_liked %}
+                    ❤️ 좋아요 취소
+                {% else %}
+                    🤍 좋아요
+                {% endif %}
+            </button>
 
-        <!-- 작성자만 수정/삭제 -->
-        {% if user == photo.author %}
-        <div>
-            <a href="{% url 'photo_gallery:photo_update' photo.pk %}">수정</a>
-            <a href="{% url 'photo_gallery:photo_delete' photo.pk %}">삭제</a>
-        </div>
+            <!-- 좋아요 수 -->
+            <span id="likeCount">{{ like_count }}</span>명이 좋아합니다
+
+            <!-- 메시지 표시 영역 -->
+            <div id="message"></div>
+        {% else %}
+            <p>로그인하면 좋아요를 누를 수 있습니다.</p>
         {% endif %}
     </div>
+
+        <script>
+        // CSRF 토큰을 가져오는 헬퍼 함수 (Django POST 요청에 필수)
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // 좋아요 버튼과 카운트 표시 영역 가져오기
+        const likeBtn = document.getElementById('likeBtn');
+        const likeCountSpan = document.getElementById('likeCount');
+
+        // 좋아요 버튼이 페이지에 존재할 경우에만 이벤트 리스너 추가
+        if (likeBtn) {
+            likeBtn.addEventListener('click', function() {
+                const photoId = this.dataset.photoId; // data-photo-id 값 가져오기
+                const url = `/photo_gallery/${photoId}/like_ajax/`; // Ajax 요청을 보낼 URL
+
+                // fetch API를 사용해 서버에 POST 요청 보내기
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken, // CSRF 토큰을 헤더에 포함
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json()) // 서버 응답을 JSON 형태로 파싱
+                .then(data => {
+                    // 서버로부터 받은 최신 데이터로 화면 업데이트
+                    if (data.user_liked) {
+                        // 좋아요를 누른 상태일 때
+                        likeBtn.innerHTML = '❤️ 좋아요 취소';
+                    } else {
+                        // 좋아요를 취소한 상태일 때
+                        likeBtn.innerHTML = '🤍 좋아요';
+                    }
+                    // 좋아요 숫자 업데이트
+                    likeCountSpan.textContent = data.like_count;
+                })
+                .catch(error => console.error('Error:', error)); // 에러 처리
+            });
+        }
+    </script>
 </body>
 </html>
