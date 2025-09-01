@@ -467,3 +467,15 @@ def art_create(request):
         'form': form,
         'title': '게시글 작성'
     })
+
+from django.db.models import Q
+def memo_search(request):
+    query = request.GET.get('q',"")
+    memos = Memo.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query)
+    )
+    context = {
+        'memos' : memos
+    }
+    
+    return render(request, 'polls/memo_list.html', context)

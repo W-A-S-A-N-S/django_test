@@ -16,6 +16,7 @@ urlpatterns = [
     path('<int:pk>/delete/', views.memo_delete, name='memo_delete'),
     path('memo/<int:memo_id>', views.one_memo, name='one_memo'),
     path('art_create', views.art_create, name='art_create'),
+    path('memo_search', views.memo_search, name='memo_search'),
     # path('hello/', views.hello, name='hello'),
     # path('lion/<str:name>/', views.lion, name='lion'),
     # path('good/', views.good, name='good'),

@@ -88,6 +88,10 @@
         <a class="nav-link disabled" aria-disabled="true">Disabled</a>
       </li>
     </ul>
+    <form action="{% url 'polls:memo_search' %}" method="GET">
+    <input type="text" name="q" value="{{ query }}">
+    <button type="submit">검색</button>
+</form>
     <form class="d-flex" role="search">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
       <button class="btn btn-outline-success" type="submit">Search</button>

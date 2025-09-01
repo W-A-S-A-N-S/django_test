@@ -25,6 +25,8 @@ urlpatterns = [
     path('', include('polls.urls')),
     path('accounts/', include('accounts.urls')),
     path('photo_gallery/', include('photo_gallery.urls')),
+    path('search/', include('polls.urls')),
+    
 ]
 
 if settings.DEBUG:
